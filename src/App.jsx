@@ -7,10 +7,10 @@ import fuzzysort from "fuzzysort";
 import searchimg from "./search.png";
 import searchtime from "./time.png";
 
-
 function App() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState([]);
+  const [perf, setPerf] = useState([]);
   const [fuzzySortResult, setFuzzySortResult] = useState([]);
   var cannedResponses = [];
   CannedResponseCategories.forEach((category) => {
@@ -37,22 +37,28 @@ function App() {
   });
 
   useEffect(() => {
+    var queryPerf = [];
     var startTime = performance.now();
     const results = fuse.search(query);
     var endTime = performance.now();
-    console.log(`Call to FuseResult took ${endTime - startTime} milliseconds`);
-    (results.length > 5)? results.length = 5: results.length = results.length;
+    queryPerf.push(`Fuse took ${endTime - startTime} milliseconds`);
+    console.log(`Fuse took ${endTime - startTime} milliseconds`);
+    results.length > 5
+      ? (results.length = 5)
+      : (results.length = results.length);
     setResult(results);
-    startTime = performance.now();
-    
-      var fuzzysortsearch = fuzzysort.go(query, cannedResponses, {
-        keys: ["shortCode", "content", "title"],
-        limit: 5,
-      })
-      setFuzzySortResult(fuzzysortsearch);
-    endTime = performance.now();
-    console.log(`Call to setFuzzySortResult took ${endTime - startTime} milliseconds`);
 
+    startTime = performance.now();
+
+    var fuzzysortsearch = fuzzysort.go(query, cannedResponses, {
+      keys: ["shortCode", "content", "title"],
+      limit: 5,
+    });
+    setFuzzySortResult(fuzzysortsearch);
+    endTime = performance.now();
+    queryPerf.push(`FuzzySort took ${endTime - startTime} milliseconds`);
+    setPerf(queryPerf);
+    console.log(`FuzzySort took ${endTime - startTime} milliseconds`);
   }, [query]);
 
   return (
@@ -63,7 +69,13 @@ function App() {
         placeholder="Search..."
         onChange={(e) => setQuery(e.target.value)}
       />
+
       <div className="header">Fuse.js Results</div>
+      <div>
+        <p>
+          <small>{perf[0]}</small>
+        </p>
+      </div>
       {result.map((result) => {
         return (
           // formatted html to show a title, subtitle, and content
@@ -74,9 +86,18 @@ function App() {
           </div>
         );
       })}
-      {
-      (result.length === 0 && query.length > 3)? <div className="no-results"><h4>No Results</h4><img src={searchimg} alt="" /></div>: null}
+      {result.length === 0 && query.length > 3 ? (
+        <div className="no-results">
+          <h4>No Results</h4>
+          <img src={searchimg} alt="" />
+        </div>
+      ) : null}
       <div className="header">FuzzySort Results</div>
+      <div>
+        <p>
+          <small>{perf[1]}</small>
+        </p>
+      </div>
       {fuzzySortResult.map((result) => {
         return (
           // formatted html to show a title, subtitle, and content
@@ -87,8 +108,12 @@ function App() {
           </div>
         );
       })}
-      {
-      (fuzzySortResult.length === 0 && query.length > 3)? <div className="no-results"><h4>No Results</h4><img src={searchtime} alt="" /></div>: null}
+      {fuzzySortResult.length === 0 && query.length > 3 ? (
+        <div className="no-results">
+          <h4>No Results</h4>
+          <img src={searchtime} alt="" />
+        </div>
+      ) : null}
     </div>
   );
 }
