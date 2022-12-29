@@ -41,8 +41,8 @@ function App() {
     var startTime = performance.now();
     const results = fuse.search(query);
     var endTime = performance.now();
-    queryPerf.push(`Fuse took ${endTime - startTime} milliseconds`);
-    console.log(`Fuse took ${endTime - startTime} milliseconds`);
+    queryPerf.push(`Fuse took ${(endTime - startTime).toFixed(0)} milliseconds`);
+    console.log(`Fuse took ${(endTime - startTime).toFixed(0)} milliseconds`);
     results.length > 5
       ? (results.length = 5)
       : (results.length = results.length);
@@ -56,9 +56,9 @@ function App() {
     });
     setFuzzySortResult(fuzzysortsearch);
     endTime = performance.now();
-    queryPerf.push(`FuzzySort took ${endTime - startTime} milliseconds`);
+    queryPerf.push(`FuzzySort took ${(endTime - startTime).toFixed(0)} milliseconds`);
     setPerf(queryPerf);
-    console.log(`FuzzySort took ${endTime - startTime} milliseconds`);
+    console.log(`FuzzySort took ${(endTime - startTime).toFixed(0)} milliseconds`);
   }, [query]);
 
   return (
