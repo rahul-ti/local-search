@@ -53,6 +53,14 @@
     padding: 0px 20px;
   }
 
+  .main{
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    word-wrap: break-word;
+    grid-gap: 20px;
+    padding: 20px;
+  }
   .header{
     font-size: 1.5em;
     font-weight: bold;
@@ -68,3 +76,4 @@
    padding-left: 20px;
    margin: 0px;
   }
+ 
