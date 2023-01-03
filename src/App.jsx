@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Fuse from "fuse.js";
 import { CannedResponseCategories } from "./cannedResponses";
@@ -123,6 +122,10 @@ function App() {
 
   return (
     <div className="App">
+      <div className="explainer">
+      <p className="explainer-text">Agents remember the keywords for the common canned responses they use frequently. Some of the key words you can try out to test this functionality are: <b><code>Hold, FRT, AWB, downtime, DC, mobile</code></b></p>
+      <p className="explainer-text">Enter the keywords in the search bar to see the results.</p>
+      </div>
       <input
         type="text"
         className="search"
@@ -133,7 +136,7 @@ function App() {
         <div>
           <div className="header">Fuse.js Results</div>
           <div>
-            <p>
+            <p className="perf">
               <small>{perf[0]}</small>
             </p>
           </div>
@@ -160,7 +163,7 @@ function App() {
         <div>
           <div className="header">FuzzySort Results</div>
           <div>
-            <p>
+            <p className="perf">
               <small>{perf[1]}</small>
             </p>
           </div>
@@ -185,7 +188,7 @@ function App() {
         <div>
           <div className="header">Mix of Fuse and Fuzzysort Results</div>
           <div>
-            <p>
+            <p className="perf">
               <small>{perf[2]}</small>
             </p>
           </div>
