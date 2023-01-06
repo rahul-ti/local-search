@@ -124,7 +124,7 @@ function App() {
     <div className="App">
       <div className="explainer">
       <p className="explainer-text">Agents remember the keywords for the common canned responses they use frequently. Some of the key words you can try out to test this functionality are: <b><code>Hold, FRT, AWB, downtime, DC, mobile</code></b></p>
-      <p className="explainer-text">Enter the keywords in the search bar to see the results.</p>
+      <p className="explainer-text">Enter the keywords in the search bar to see the results. Try the same keywords of FC if you wish to compare performance and result quality.</p>
       </div>
       <input
         type="text"
