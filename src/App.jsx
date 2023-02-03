@@ -63,7 +63,7 @@ function App() {
           <div className="header">FuzzySort Results</div>
           <div>
             <p className="perf">
-              <small>{perf[1]}</small>
+              <small>{perf[0]}</small>
             </p>
           </div>
           {fuzzySortResult.map((result, index) => {
