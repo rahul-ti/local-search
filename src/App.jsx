@@ -14,22 +14,35 @@ function App() {
     var queryPerf = [];
     var startTime = performance.now();
     var fuzzysortsearch = fuzzysort.go(query, CannedResponses, {
-      keys: ["shortcode", "description", "title"],
+      keys: ["shortcode"],
       limit: searchResultsCount,
       //assign different weights to different keys using scoreFn
-      scoreFn: (a) => {
-        var score = -100000;
-        score = Math.max(
-          a[0]?.score == null ? -10000 : a[0].score,
-          a[1]?.score == null ? -10000 : a[1].score - 3000,
-          a[2]?.score == null ? -10000 : a[2].score - 3000
-        );
-        return score;
-      },
+      // scoreFn: (a) => {
+      //   var score = -100000;
+      //   score = Math.max(
+      //     a[0]?.score == null ? -10000 : a[0].score,
+      //     a[1]?.score == null ? -10000 : a[1].score - 3000,
+      //     a[2]?.score == null ? -10000 : a[2].score - 3000
+      //   );
+      //   return score;
+      // },
+      threshold:-1000
     });
+    var highestScore = fuzzysortsearch[fuzzysortsearch.length - 1]?.score;
+    var resultSortedByUsageCount = fuzzysortsearch.sort(
+      (a, b) => b.obj.usageCount - a.obj.usageCount
+    );
+    var highestUsageCount = resultSortedByUsageCount[0]?.obj.usageCount;
+    var mixedResult = fuzzysortsearch.sort(
+      (a, b) =>
+        (a.score / highestScore) * 0.7 +
+        (1 - a.obj.usageCount / highestUsageCount) * 0.3 -
+        ((b.score / highestScore) * 0.7 +
+          (1 - b.obj.usageCount / highestUsageCount) * 0.3)
+    );
     var endTime = performance.now();
     console.log(fuzzysortsearch);
-    setFuzzySortResult(fuzzysortsearch);
+    setFuzzySortResult(mixedResult);
     queryPerf.push(
       `FuzzySort took ${(endTime - startTime).toFixed(0)} milliseconds`
     );
